@@ -1,0 +1,314 @@
+#!/bin/bash
+
+# @file ttt_a_test
+#
+# Tic-Tac-Toe (Naughts and Crosses)
+# Tests the array representation of the board
+#
+# Markers: X: x marker, O: o marker, _: no marker
+#
+# @date Jan 1, 2020
+# @author philip gust
+#
+
+# read ttt board definitions
+dir=$(dirname "$0")
+source "$dir/ttt_board_a"
+source "$dir/unit_test"
+
+
+##
+#  Play an interactive game of tic-tac-toe.
+#
+test_X_win() {
+    declare -a tttBoard            # indexed array tttBoard
+    
+    # initialize the board
+    initBoard tttBoard
+    sol=(_ _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X first move to position 1
+    markBoard X 1 tttBoard
+    sol=(X _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 9
+    markBoard O 9 tttBoard
+    sol=(X _ _ _ _ _ _ _ O)
+    assertArrayEqual tttBoard sol
+
+    ### Additional tests here  for X winning game
+    # X move to position 2
+    markBoard X 2 tttBoard
+    sol=(X X _ _ _ _ _ _ O)
+    assertArrayEqual tttBoard sol
+    
+    # O move to position 8
+    markBoard O 8 tttBoard
+    sol=(X X _ _ _ _ _ O O)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 3
+    markBoard X 3 tttBoard
+    sol=(X X X _ _ _ _ O O)
+    assertArrayEqual tttBoard sol
+
+    # X has won
+    hasWon X tttBoard
+    assertStatusSuccess
+
+    # O has not won
+    hasWon O tttBoard
+    assertStatusFailure
+}
+
+test_X_win_row() {
+    declare -a tttBoard             # indexed array tttBoard
+    
+    # initialize the board
+    initBoard tttBoard
+    sol=( _ _ _ _ _ _ _ _ _ )
+    assertArrayEqual tttBoard sol
+    
+    # X first move to position 5
+    markBoard X 5 tttBoard
+    sol=(_ _ _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O first move to position 1
+    markBoard O 1 tttBoard
+    sol=(O _ _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 9
+    markBoard X 4 tttBoard
+    sol=(O _ _ X X _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 2
+    markBoard O 2 tttBoard
+    sol=(O O _ X X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 6
+    markBoard X 6 tttBoard
+    sol=(O O _ X X X _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X has won
+    hasWon X tttBoard
+    assertStatusSuccess
+
+    # O has not won
+    hasWon O tttBoard
+    assertStatusFailure
+}
+
+
+test_O_win_col() {
+    declare -a tttBoard            # indexed array tttBoard
+    
+    # initialize the board
+    initBoard tttBoard
+    sol=(_ _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X first move to position 5
+    markBoard X 5 tttBoard
+    sol=(_ _ _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 1
+    markBoard O 1 tttBoard
+    sol=(O _ _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 2
+    markBoard X 2 tttBoard
+    sol=(O X _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 1
+    markBoard O 4 tttBoard
+    sol=(O X _ O X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 3
+    markBoard X 3 tttBoard
+    sol=(O X X O X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # O move to position 7
+    markBoard O 7 tttBoard
+    sol=(O X X O X _ O _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X has not won
+    hasWon X tttBoard
+    assertStatusFailure
+
+    # O has won
+    hasWon O tttBoard
+    assertStatusSuccess
+}
+
+test_win_diag() {
+    declare -a tttBoard            # indexed array tttBoard
+    
+    # initialize the board
+    initBoard tttBoard
+    sol=(_ _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X first move to position 5
+    markBoard X 5 tttBoard
+    sol=(_ _ _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O first move to position 2
+    markBoard O 2 tttBoard
+    sol=(_ O _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 1
+    markBoard X 1 tttBoard
+    sol=(X O _ _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 3
+    markBoard O 3 tttBoard
+    sol=(X O O _ X _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 9
+    markBoard X 9 tttBoard
+    sol=(X O O _ X _ _ _ X)
+    assertArrayEqual tttBoard sol
+
+    # X has won
+    hasWon X tttBoard
+    assertStatusSuccess
+
+    # O has not won
+    hasWon O tttBoard
+    assertStatusFailure
+    
+    #antiDiagonal
+    declare -a tttBoard             # indexed array tttBoard
+    
+    # initialize the board
+    initBoard tttBoard
+    sol=(_ _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X first move to position 1
+    markBoard X 1 tttBoard
+    sol=(X _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 5
+    markBoard O 5 tttBoard
+    sol=(X _ _ _ O _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 2
+    markBoard X 2 tttBoard
+    sol=(X X _ _ O _ _ _ _)
+    assertArrayEqual tttBoard sol
+
+    # O move to position 3
+    markBoard O 3 tttBoard
+    sol=(X X O _ O _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 4
+    markBoard X 4 tttBoard
+    sol=(X X O X O _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # O move to position 7
+    markBoard O 7 tttBoard
+    sol=(X X O X O _ O _ _)
+    assertArrayEqual tttBoard sol
+
+    # X has not won
+    hasWon X tttBoard
+    assertStatusFailure
+
+    # O not won
+    hasWon O tttBoard
+    assertStatusSuccess
+}
+
+test_draw() {
+    
+    declare -a tttBoard         #indexed array tttBoard
+    
+    # initialize tttboard
+    initBoard tttBoard
+    sol=( _ _ _ _ _ _ _ _ _ )
+    assertArrayEqual tttBoard sol
+    
+    # X first move to position 1
+    markBoard X 1 tttBoard
+    sol=(X _ _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # O first move to position 2
+    markBoard O 2 tttBoard
+    sol=(X O _ _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 3
+    markBoard X 3 tttBoard
+    sol=(X O X _ _ _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # O move to position 5
+    markBoard O 5 tttBoard
+    sol=(X O X _ O _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 4
+    markBoard X 4 tttBoard
+    sol=(X O X X O _ _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # O move to position 6
+    markBoard O 6 tttBoard
+    sol=(X O X X O O _ _ _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 8
+    markBoard X 8 tttBoard
+    sol=(X O X X O O _ X _)
+    assertArrayEqual tttBoard sol
+    
+    # O move to position 7
+    markBoard O 7 tttBoard
+    sol=(X O X X O O O X _)
+    assertArrayEqual tttBoard sol
+    
+    # X move to position 9
+    markBoard X 9 tttBoard
+    sol=(X O X X O O O X X)
+    assertArrayEqual tttBoard sol
+    
+    # X has not won
+    hasWon X tttBoard
+    assertStatusFailure
+
+    # O has not won
+    hasWon O tttBoard
+    assertStatusFailure
+}
+
+runUnitTest test_X_win
+runUnitTest test_X_win_row
+runUnitTest test_O_win_col
+runUnitTest test_win_diag
+runUnitTest test_draw
+
+# show unit test summary
+unitTestSummary

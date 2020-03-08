@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# @file ttt_board_a
+#
+# Defines board functions for tic-tac-toe (naughts and crosses)
+# This implementation uses an array to represent the board
+#
+# @date Jan 1, 2020
+# @author philip gust
+#
+
+##
+#  Initialize empty board.
+#
+#  @param board reference to the board
+#
+initBoard() {
+    declare -n iniboard=$1
+    iniboard=( _ _ _ _ _ _ _ _ _ )
+}
+
+
+markBoard() {
+    # your code here
+    declare mark=$1
+    declare -i place=$2
+    declare -n iniboard=$3
+    if [ "$place" -le 0 ] || [ "$place" -ge 10 ] || [ ${iniboard[$place-1]} == "X" ] || [ ${iniboard[$place-1]} == "O" ] ; then
+        return 1
+    fi
+    iniboard[$place-1]="$mark"
+    return 0
+}
+
+hasWon() {
+    # your code here
+    declare -a countR=(0 0 0)
+    declare -a countC=(0 0 0)
+    declare -i diagonal=0
+    declare -i oppoDiag=0
+    declare mark=$1
+    declare -n iniboard=$2
+    for a in {0,1,2} ; do
+        for b in {0,1,2}; do
+            if [ "${iniboard[a*3+b]}" == "$mark" ]; then
+                (( countR[$a]++ ))
+                (( countC[$b]++ ))
+                if [ $(($a + $b)) == 2 ]; then ((oppoDiag++)); fi
+                if [ "$a" == "$b" ]; then ((diagonal++)); fi
+            fi
+            if [ "${countR[$a]}" == "3" ] || [ "${countC[$b]}" == "3" ]; then return 0; fi
+            if [ "$diagonal" == "3" ] || [ "$oppoDiag" == "3" ]; then return 0; fi
+        done
+    done
+    return 1
+}
+
+
+displayBoard() {
+    # your code here
+    declare -n iniboard=$1
+    echo "-------------"
+    for a in {0,1,2}; do
+        echo -n "|"
+        for b in ${iniboard[*]:$a*3:3}; do
+        echo -n " $b |";
+        done
+        echo
+    done
+    echo "-------------"
+}
